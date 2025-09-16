@@ -1,123 +1,150 @@
 body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: #0d0d0d;
-      margin: 0;
-      padding: 0;
-      color: white;
-    }
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: #0d0d0d;
+  margin: 0;
+  padding: 0;
+  color: white;
+}
 
-    /* Blue Pass Card */
-    .card {
-      background: #007aff;
-      border-radius: 16px;
-      padding: 20px;
-      width: 90%;
-      max-width: 380px;
-      margin: 20px auto;
-      text-align: left;
-      position: relative;
-      color: #fff;
-    }
+/* Blue Pass Card */
+.card {
+  background: #007aff;
+  border-radius: 16px;
+  padding: 20px;
+  width: 90%;
+  max-width: 380px;
+  margin: 20px auto;
+  text-align: left;
+  position: relative;
+  color: #fff;
+}
 
-    .card h2 { margin:0; font-size:22px; font-weight:600; }
-    .qty { position:absolute; top:20px; right:20px; }
+.card h2 { margin:0; font-size:22px; font-weight:600; }
+.qty { position:absolute; top:20px; right:20px; }
 
-    .qr { text-align:center; margin:20px 0; }
-    .qr img { width:160px; height:160px; background:#fff; padding:10px; border-radius:12px; }
+.qr { text-align:center; margin:20px 0; }
+.qr img { width:160px; height:160px; background:#fff; padding:10px; border-radius:12px; }
 
-    .details { display:flex; justify-content:space-between; font-size:14px; }
+.details { display:flex; justify-content:space-between; font-size:14px; }
 
-    /* Buttons */
-    .btn {
-      display:block; width:90%; margin:10px auto;
-      padding:15px; font-size:16px; font-weight:600;
-      border:none; border-radius:12px; cursor:pointer;
-    }
-    .btn.gray { background:#2c2c2e; color:#fff; }
-    .btn.blue { background:#007aff; color:#fff; }
+/* Buttons */
+.btn {
+  display:block; width:90%; margin:10px auto;
+  padding:15px; font-size:16px; font-weight:600;
+  border:none; border-radius:12px; cursor:pointer;
+}
+.btn.gray { background:#2c2c2e; color:#fff; }
+.btn.blue { background:#007aff; color:#fff; }
 
-    /* Modal for staff redeem */
-    .modal {
-      display:none; position:fixed; top:0; left:0; width:100%; height:100%;
-      background:#0d0d0d; justify-content:center; align-items:center; flex-direction:column;
-      z-index:10;
-    }
+/* Modal for staff redeem */
+.modal {
+  display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+  background:#0d0d0d; justify-content:center; align-items:center; flex-direction:column;
+  z-index:10;
+}
 
-    .emoji-box {
-      display:flex; align-items:center; justify-content:center;
-      font-size:32px;
-      background:#1c1c1e;
-      padding:10px 20px;
-      border-radius:12px;
-      margin:20px 0;
-    }
+.emoji-box {
+  display:flex; align-items:center; justify-content:center;
+  font-size:32px;
+  background:#1c1c1e;
+  padding:10px 20px;
+  border-radius:12px;
+  margin:20px 0;
+}
 
-    .divider {
-      width:2px;
-      height:40px;
-      background:#007aff;
-      margin:0 15px;
-      animation: slideSide 1.5s infinite ease-in-out;
-    }
-    @keyframes slideSide {
-      0% { transform: translateX(-8px); }
-      50% { transform: translateX(8px); }
-      100% { transform: translateX(-8px); }
-    }
+.divider {
+  width:2px;
+  height:40px;
+  background:#007aff;
+  margin:0 15px;
+  animation: slideSide 1.5s infinite ease-in-out;
+}
+@keyframes slideSide {
+  0% { transform: translateX(-8px); }
+  50% { transform: translateX(8px); }
+  100% { transform: translateX(-8px); }
+}
 
-    /* Animation screen */
-    .animation-screen {
-      display:none;
-      position:fixed; top:0; left:0; width:100%; height:100%;
-      background:#1c1c1e; justify-content:center; align-items:center; flex-direction:column;
-      z-index:20;
-    }
-    #loaderArc { width:120px; height:120px; }
-    #checkIcon { width:100px; height:100px; }
+/* Animation screen */
+.animation-screen {
+  display:none;
+  position:fixed; top:0; left:0; width:100%; height:100%;
+  background:#1c1c1e; justify-content:center; align-items:center; flex-direction:column;
+  z-index:20;
+}
+#loaderArc { width:120px; height:120px; }
+#checkIcon { width:100px; height:100px; }
 
-    .tagline { margin-top:20px; opacity:0; color:#bfbfbf; font-size:18px; }
+.tagline { margin-top:20px; opacity:0; color:#bfbfbf; font-size:18px; }
 
-    /* Pieces */
-    .pieces { display:flex; gap:10px; font-size:40px; color:white; }
+/* Pieces */
+.pieces { display:flex; gap:10px; font-size:40px; color:white; }
 
-    /* LL Logo */
-    .ll-logo {
-      display:flex;
-      align-items:flex-end;
-      justify-content:center;
-      gap:5px;
-      transform: skewX(-15deg);
-    }
-    .l-block {
-      width:28px;
-      height:50px;
-      background:white;
-      position:relative;
-    }
-    .l-block::after {
-      content:"";
-      position:absolute;
-      bottom:0; left:0;
-      width:28px; height:12px;
-      background:white;
-    }
+/* LL Logo */
+.ll-logo {
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  gap:5px;
+  transform: skewX(-15deg);
+}
+.l-block {
+  width:28px;
+  height:50px;
+  background:white;
+  position:relative;
+}
+.l-block::after {
+  content:"";
+  position:absolute;
+  bottom:0; left:0;
+  width:28px; height:12px;
+  background:white;
+}
 
-    /* No Passes */
-    #noPasses {
-      display:none;
-      text-align:center;
-      margin-top:150px;
-      color:#fff;
-    }
-    #buyBtn {
-      display:none;
-      width:90%;
-      margin:20px auto;
-      padding:15px;
-      font-size:16px;
-      font-weight:600;
-      border:none;
-      border-radius:12px;
-      background:#007aff;
-      color:#fff;
-    }
+/* ✅ Bottom navigation bar */
+.tabs {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  border-top: 1px solid #222;
+  background: #0d0d0d;
+  padding: 10px 0;
+  z-index: 100;
+}
+
+.tabs div {
+  flex: 1;
+  text-align: center;
+  font-size: 13px;
+  opacity: 0.6;
+}
+
+.tabs .active {
+  color: #007aff;
+  opacity: 1;
+  font-weight: 600;
+}
+
+/* No Passes */
+#noPasses {
+  display:none;
+  text-align:center;
+  margin-top:150px;
+  color:#fff;
+}
+#buyBtn {
+  display:none;
+  width:90%;
+  margin:20px auto;
+  padding:15px;
+  font-size:16px;
+  font-weight:600;
+  border:none;
+  border-radius:12px;
+  background:#007aff;
+  color:#fff;
+}
