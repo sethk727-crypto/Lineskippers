@@ -6,139 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <link rel="stylesheet" href="./style.css">
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: #0d0d0d;
-      margin: 0;
-      padding: 0;
-      color: white;
-    }
-
-    /* ====== Pass Card ====== */
-    .card {
-      background: #007aff;
-      border-radius: 16px;
-      padding: 20px;
-      width: 90%;
-      max-width: 380px;
-      margin: 20px auto;
-      text-align: left;
-      position: relative;
-      color: #fff;
-    }
-    .card h2 { margin:0; font-size:22px; font-weight:600; }
-    .qty { position:absolute; top:20px; right:20px; }
-    .qr { text-align:center; margin:20px 0; }
-    .qr img { width:160px; height:160px; background:#fff; padding:10px; border-radius:12px; }
-    .details { display:flex; justify-content:space-between; font-size:14px; }
-
-    /* Buttons */
-    .btn {
-      display:block; width:90%; margin:10px auto;
-      padding:15px; font-size:16px; font-weight:600;
-      border:none; border-radius:12px; cursor:pointer;
-    }
-    .btn.gray { background:#2c2c2e; color:#fff; }
-    .btn.blue { background:#007aff; color:#fff; }
-
-    /* Modal for staff redeem */
-    .modal {
-      display:none; position:fixed; top:0; left:0; width:100%; height:100%;
-      background:#0d0d0d; justify-content:center; align-items:center; flex-direction:column;
-      z-index:10;
-    }
-
-    .emoji-box {
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      font-size:32px;
-      background:#1c1c1e;
-      padding:10px 40px;
-      border-radius:12px;
-      margin:20px 0;
-      width:220px;
-      position:relative;
-    }
-    .divider {
-      position:absolute;
-      top:10px; bottom:10px;
-      width:3px;
-      background:#007aff;
-      animation: scanLine 2s infinite ease-in-out;
-    }
-    @keyframes scanLine {
-      0%   { left:40px; }
-      50%  { left:calc(100% - 40px); }
-      100% { left:40px; }
-    }
-
-    /* Animation screen */
-    .animation-screen {
-      display:none;
-      position:fixed; top:0; left:0; width:100%; height:100%;
-      background:#1c1c1e; justify-content:center; align-items:center; flex-direction:column;
-      z-index:20;
-    }
-    #loaderArc { width:120px; height:120px; }
-    #checkIcon { width:100px; height:100px; }
-    .tagline { margin-top:20px; opacity:0; color:#bfbfbf; font-size:18px; }
-
-    .pieces { display:flex; gap:10px; font-size:40px; color:white; }
-
-    /* LL Logo image */
-    #llLogo {
-      display:none;
-      width:120px;
-      height:auto;
-    }
-
-    /* No Passes */
-    #noPasses {
-      display:none;
-      text-align:center;
-      margin-top:150px;
-      color:#fff;
-    }
-    #buyBtn {
-      display:none;
-      width:90%;
-      margin:20px auto;
-      padding:15px;
-      font-size:16px;
-      font-weight:600;
-      border:none;
-      border-radius:12px;
-      background:#007aff;
-      color:#fff;
-    }
-
-    /* ✅ Bottom Navigation */
-    .tabs {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      display: flex;
-      justify-content: space-around;
-      border-top: 1px solid #222;
-      background: #0d0d0d;
-      padding: 10px 0;
-      z-index: 100;
-    }
-    .tabs div {
-      flex: 1;
-      text-align: center;
-      font-size: 13px;
-      opacity: 0.6;
-    }
-    .tabs .active {
-      color: #007aff;
-      opacity: 1;
-      font-weight: 600;
-    }
-  </style>
 </head>
 <body>
 
@@ -154,10 +21,6 @@
       <p><strong>Expires at</strong><br>Sep 16, 4:00 AM</p>
     </div>
   </div>
-
-  <!-- Buttons -->
-  <button class="btn gray" onclick="openStaffModal()">I am the bartender or venue staff</button>
-  <button class="btn blue">How to redeem this pass</button>
 
   <!-- Staff Modal -->
   <div id="staffModal" class="modal">
@@ -193,7 +56,6 @@
       <div>■</div><div>■</div>
     </div>
 
-    <!-- ✅ LL logo image -->
     <img id="llLogo" src="LLogo.jpeg" alt="LL Logo" style="display:none; width:120px; height:auto;" />
 
     <div class="tagline" id="tagline">Fun, Faster.</div>
@@ -206,30 +68,38 @@
   </div>
   <button id="buyBtn">Buy Another Pass</button>
 
-  <!-- ✅ Bottom Navigation -->
-  <!-- ✅ Bottom Navigation with icons -->
-<nav class="tabs">
-  <div>
-    <img src="VENUES.jpeg" alt="Venues">
-    <span>Venues</span>
-  </div>
-  <div class="active">
-    <img src="mY PASSES.jpeg" alt="My Passes">
-    <span>My Passes</span>
-  </div>
-  <div>
-    <img src="dROPS.jpeg" alt="Drops">
-    <span>Drops</span>
-  </div>
-  <div>
-    <img src="aCCOUNT.jpeg" alt="Account">
-    <span>Account</span>
-  </div>
-</nav>
+  <!-- ✅ Fixed Bottom Buttons -->
+  <div class="button-block">
+    <p class="note">
+      Show doorman pass to redeem. <br>
+      Only doorman should redeem.
+    </p>
 
+    <button class="btn gray" onclick="openStaffModal()">I am the bartender or venue staff</button>
+    <button class="btn blue">How to redeem this pass</button>
+  </div>
+
+  <!-- ✅ Bottom Navigation -->
+  <nav class="tabs">
+    <div>
+      <img src="VENUES.jpeg" alt="Venues">
+      <span>Venues</span>
+    </div>
+    <div class="active">
+      <img src="mY PASSES.jpeg" alt="My Passes">
+      <span>My Passes</span>
+    </div>
+    <div>
+      <img src="dROPS.jpeg" alt="Drops">
+      <span>Drops</span>
+    </div>
+    <div>
+      <img src="aCCOUNT.jpeg" alt="Account">
+      <span>Account</span>
+    </div>
+  </nav>
 
   <script>
-    // Open/close modal
     function openStaffModal(){
       document.getElementById("staffModal").style.display="flex";
       updateTime();
@@ -242,7 +112,6 @@
       document.getElementById("liveTime").textContent = new Date().toLocaleString();
     }
 
-    // Redeem animation
     function startAnimation(){
       document.getElementById("staffModal").style.display="none";
       const screen=document.getElementById("animationScreen");
@@ -254,30 +123,25 @@
       const logo=document.getElementById("llLogo");
       const tagline=document.getElementById("tagline");
 
-      // Step 1: Animate loader arc
       gsap.fromTo(loaderArc,{strokeDashoffset:200},{strokeDashoffset:0, duration:1.5, ease:"power2.inOut", onComplete:()=>{
-        // Step 2: Replace arc with checkmark
         document.getElementById("loaderArc").style.display="none";
         check.style.display="block";
         gsap.from(check,{scale:0, duration:0.5, ease:"back.out(2)"});
         gsap.to(tagline,{opacity:1, delay:0.5, duration:1});
       }});
 
-      // Step 3: Break into pieces
       setTimeout(()=>{
         check.style.display="none";
         pieces.style.display="flex";
         gsap.fromTo(pieces.children,{y:0,opacity:1},{y:-80, rotation:180, opacity:0, duration:1, stagger:0.2});
       },3000);
 
-      // Step 4: Show LL logo image
       setTimeout(()=>{
         pieces.style.display="none";
         logo.style.display="block";
         gsap.from(logo,{scale:0, y:-50, duration:0.7, ease:"back.out(1.7)"});
       },4200);
 
-      // Step 5: End screen
       setTimeout(()=>{
         screen.style.display="none";
         document.getElementById("noPasses").style.display="block";
