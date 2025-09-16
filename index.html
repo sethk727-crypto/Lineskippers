@@ -1,275 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>LineSkip Pass</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <link rel="stylesheet" href="style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <link rel="stylesheet" href="./style.css">
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: #0d0d0d;
-      margin: 0;
-      padding: 0;
-      color: white;
-    }
-
-    /* ====== Pass Card ====== */
-    .card {
-      background: #007aff;
-      border-radius: 16px;
-      padding: 20px;
-      width: 90%;
-      max-width: 380px;
-      margin: 20px auto;
-      text-align: left;
-      position: relative;
-      color: #fff;
-    }
-    .card h2 { margin:0; font-size:22px; font-weight:600; }
-    .qty { position:absolute; top:20px; right:20px; }
-    .qr { text-align:center; margin:20px 0; }
-    .qr img { width:160px; height:160px; background:#fff; padding:10px; border-radius:12px; }
-    .details { display:flex; justify-content:space-between; font-size:14px; }
-
-    /* Buttons */
-    .btn {
-      display:block; width:90%; margin:10px auto;
-      padding:15px; font-size:16px; font-weight:600;
-      border:none; border-radius:12px; cursor:pointer;
-    }
-    .btn.gray { background:#2c2c2e; color:#fff; }
-    .btn.blue { background:#007aff; color:#fff; }
-
-    /* Modal for staff redeem */
-    .modal {
-      display:none; position:fixed; top:0; left:0; width:100%; height:100%;
-      background:#0d0d0d; justify-content:center; align-items:center; flex-direction:column;
-      z-index:10;
-    }
-
-    .emoji-box {
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      font-size:32px;
-      background:#1c1c1e;
-      padding:10px 40px;
-      border-radius:12px;
-      margin:20px 0;
-      width:220px;
-      position:relative;
-    }
-    .divider {
-      position:absolute;
-      top:10px; bottom:10px;
-      width:3px;
-      background:#007aff;
-      animation: scanLine 2s infinite ease-in-out;
-    }
-    @keyframes scanLine {
-      0%   { left:40px; }
-      50%  { left:calc(100% - 40px); }
-      100% { left:40px; }
-    }
-
-    /* Animation screen */
-    .animation-screen {
-      display:none;
-      position:fixed; top:0; left:0; width:100%; height:100%;
-      background:#1c1c1e; justify-content:center; align-items:center; flex-direction:column;
-      z-index:20;
-    }
-    #loaderArc { width:120px; height:120px; }
-    #checkIcon { width:100px; height:100px; }
-    .tagline { margin-top:20px; opacity:0; color:#bfbfbf; font-size:18px; }
-
-    .pieces { display:flex; gap:10px; font-size:40px; color:white; }
-
-    /* LL Logo image */
-    #llLogo {
-      display:none;
-      width:120px;
-      height:auto;
-    }
-
-    /* No Passes */
-    #noPasses {
-      display:none;
-      text-align:center;
-      margin-top:150px;
-      color:#fff;
-    }
-    #buyBtn {
-      display:none;
-      width:90%;
-      margin:20px auto;
-      padding:15px;
-      font-size:16px;
-      font-weight:600;
-      border:none;
-      border-radius:12px;
-      background:#007aff;
-      color:#fff;
-    }
-
-    /* ✅ Bottom Navigation */
-    .tabs {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      display: flex;
-      justify-content: space-around;
-      border-top: 1px solid #222;
-      background: #0d0d0d;
-      padding: 10px 0;
-      z-index: 100;
-    }
-    .tabs div {
-      flex: 1;
-      text-align: center;
-      font-size: 13px;
-      opacity: 0.6;
-    }
-    .tabs .active {
-      color: #007aff;
-      opacity: 1;
-      font-weight: 600;
-    }
-  </style>
 </head>
 <body>
 
-  <!-- Pass Card -->
-  <div class="card" id="passCard">
-    <h2>Champs Downtown<br>LineSkip</h2>
-    <div class="qty">Qty: 1</div>
-    <div class="qr">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=LineSkipPass" alt="QR Code">
+  <!-- Screen content (everything above the tab bar) -->
+  <main class="app">
+
+    <!-- Pass Card -->
+    <section class="card" id="passCard">
+      <div class="card-top">
+        <span class="venue">Champs Downtown</span>
+        <span class="qty">Qty: 1</span>
+      </div>
+
+      <h2 class="brand">LineSkip</h2>
+
+      <div class="qr">
+        <img
+          src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=LineSkipPass"
+          alt="QR Code"/>
+      </div>
+
+      <div class="details">
+        <div class="detail">
+          <div class="label">Passholder</div>
+          <div class="value">Seth king</div>
+        </div>
+        <div class="detail right">
+          <div class="label">Expires at</div>
+          <div class="value">Sep 16, 4:00 AM</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom section: instruction + buttons + dot -->
+    <section class="bottom-section">
+      <p class="note">
+        Show doorman pass to redeem.<br />
+        Only doorman should redeem.
+      </p>
+
+      <button class="btn btn-gray" id="openSheetBtn">I am the bartender or venue staff</button>
+      <button class="btn btn-blue" id="howBtn">How to redeem this pass</button>
+
+      <div class="pager-dot" aria-hidden="true"></div>
+    </section>
+  </main>
+
+  <!-- Bottom Navigation with your icons -->
+  <nav class="tabs" role="navigation" aria-label="Main">
+    <a class="tab" href="#" aria-label="Venues">
+      <img src="VENUES.jpeg" alt="" />
+      <span>Venues</span>
+    </a>
+    <a class="tab active" href="#" aria-current="page" aria-label="My Passes">
+      <img src="mY PASSES.jpeg" alt="" />
+      <span>My Passes</span>
+    </a>
+    <a class="tab" href="#" aria-label="Drops">
+      <img src="dROPS.jpeg" alt="" />
+      <span>Drops</span>
+    </a>
+    <a class="tab" href="#" aria-label="Account">
+      <img src="aCCOUNT.jpeg" alt="" />
+      <span>Account</span>
+    </a>
+  </nav>
+
+  <!-- ===== Slide-up bottom sheet ===== -->
+  <div class="backdrop" id="backdrop"></div>
+  <aside class="sheet" id="sheet" aria-hidden="true" role="dialog" aria-label="Staff redeem">
+    <div class="sheet-handle"></div>
+
+    <!-- circular logo (uses venueLogo.png if present, otherwise shows text fallback) -->
+    <div class="logo-wrap">
+      <img class="logo-img" src="venueLogo.png" alt="Champs logo"
+           onerror="this.style.display='none'; this.previousElementSibling.style.display='flex';" />
+      <div class="logo-fallback">Champs</div>
     </div>
-    <div class="details">
-      <p><strong>Passholder</strong><br>Seth King</p>
-      <p><strong>Expires at</strong><br>Sep 16, 4:00 AM</p>
-    </div>
-  </div>
 
-  <!-- Buttons -->
-  <button class="btn gray" onclick="openStaffModal()">I am the bartender or venue staff</button>
-  <button class="btn blue">How to redeem this pass</button>
-
-  <!-- Staff Modal -->
-  <div id="staffModal" class="modal">
-    <div class="qr">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=Redeem" alt="QR Code">
-    </div>
-    <p>Current time<br><span id="liveTime"></span></p>
-
-    <div class="emoji-box">
-      <span>🍄</span>
-      <div class="divider"></div>
-      <span>🍤</span>
+    <div class="sheet-card">
+      <div class="qr-big">
+        <img
+          src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=Redeem"
+          alt="Redeem QR"/>
+      </div>
+      <p class="current-time">
+        <span>Current time</span><br />
+        <strong id="liveTime">—</strong>
+      </p>
     </div>
 
-    <p style="color:#ffcc00; margin:10px 0;">⚠ This action cannot be undone</p>
-    <button class="btn blue" onclick="startAnimation()">Redeem</button>
-    <button class="btn gray" onclick="closeStaffModal()">Cancel</button>
-  </div>
+    <!-- scanner lane with moving vertical line + emojis -->
+    <div class="scanner">
+      <div class="scan-line"></div>
+      <div class="icons">
+        <span>🍄</span>
+        <span>🦐</span>
+      </div>
+    </div>
 
-  <!-- Animation Screen -->
-  <div id="animationScreen" class="animation-screen">
-    <svg id="loaderArc" viewBox="0 0 100 100">
-      <circle cx="50" cy="50" r="40" stroke="white" stroke-width="8" fill="none"
-        stroke-linecap="round" stroke-dasharray="200" stroke-dashoffset="200"/>
+    <p class="warn">⚠️ This action cannot be undone</p>
+
+    <button class="btn btn-blue" id="redeemBtn">Redeem</button>
+    <button class="btn btn-ghost" id="cancelSheetBtn">Cancel</button>
+  </aside>
+
+  <!-- ===== Fullscreen animation overlay ===== -->
+  <section class="anim-screen" id="animScreen" aria-hidden="true">
+    <svg id="loaderArc" viewBox="0 0 100 100" class="arc">
+      <circle cx="50" cy="50" r="40"
+              stroke="white" stroke-width="8" fill="none"
+              stroke-linecap="round" stroke-dasharray="200" stroke-dashoffset="200" />
     </svg>
 
-    <svg id="checkIcon" viewBox="0 0 52 52" style="display:none;">
+    <svg id="checkIcon" viewBox="0 0 52 52" class="check" style="display:none;">
       <circle cx="26" cy="26" r="24" fill="none" stroke="white" stroke-width="4"/>
       <path d="M14 27 L22 35 L38 18" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
     </svg>
 
-    <div id="pieces" class="pieces" style="display:none;">
-      <div>■</div><div>■</div>
-    </div>
+    <div id="pieces" class="pieces" style="display:none;">■ ■</div>
 
-    <!-- ✅ LL logo image -->
-    <img id="llLogo" src="LLogo.jpeg" alt="LL Logo" style="display:none; width:120px; height:auto;" />
+    <img id="llLogo" src="LLogo.jpeg" alt="LL Logo" class="ll-logo" style="display:none;" />
 
     <div class="tagline" id="tagline">Fun, Faster.</div>
-  </div>
+  </section>
 
-  <!-- No Passes Screen -->
-  <div id="noPasses">
-    <img src="https://cdn-icons-png.flaticon.com/512/1047/1047711.png" width="80" alt="Beer Mug"><br>
+  <!-- “No Passes” state after redeem -->
+  <section id="noPasses" class="empty" style="display:none;">
     <h2>You Have No Passes</h2>
-  </div>
-  <button id="buyBtn">Buy Another Pass</button>
+    <button id="buyBtn" class="btn btn-blue">Buy Another Pass</button>
+  </section>
 
-  <!-- ✅ Bottom Navigation -->
-  <nav class="tabs">
-    <div>Venues</div>
-    <div class="active">My Passes</div>
-    <div>Drops</div>
-    <div>Account</div>
-  </nav>
-
-  <script>
-    // Open/close modal
-    function openStaffModal(){
-      document.getElementById("staffModal").style.display="flex";
-      updateTime();
-      setInterval(updateTime,1000);
-    }
-    function closeStaffModal(){
-      document.getElementById("staffModal").style.display="none";
-    }
-    function updateTime(){
-      document.getElementById("liveTime").textContent = new Date().toLocaleString();
-    }
-
-    // Redeem animation
-    function startAnimation(){
-      document.getElementById("staffModal").style.display="none";
-      const screen=document.getElementById("animationScreen");
-      screen.style.display="flex";
-
-      const loaderArc=document.querySelector("#loaderArc circle");
-      const check=document.getElementById("checkIcon");
-      const pieces=document.getElementById("pieces");
-      const logo=document.getElementById("llLogo");
-      const tagline=document.getElementById("tagline");
-
-      // Step 1: Animate loader arc
-      gsap.fromTo(loaderArc,{strokeDashoffset:200},{strokeDashoffset:0, duration:1.5, ease:"power2.inOut", onComplete:()=>{
-        // Step 2: Replace arc with checkmark
-        document.getElementById("loaderArc").style.display="none";
-        check.style.display="block";
-        gsap.from(check,{scale:0, duration:0.5, ease:"back.out(2)"});
-        gsap.to(tagline,{opacity:1, delay:0.5, duration:1});
-      }});
-
-      // Step 3: Break into pieces
-      setTimeout(()=>{
-        check.style.display="none";
-        pieces.style.display="flex";
-        gsap.fromTo(pieces.children,{y:0,opacity:1},{y:-80, rotation:180, opacity:0, duration:1, stagger:0.2});
-      },3000);
-
-      // Step 4: Show LL logo image
-      setTimeout(()=>{
-        pieces.style.display="none";
-        logo.style.display="block";
-        gsap.from(logo,{scale:0, y:-50, duration:0.7, ease:"back.out(1.7)"});
-      },4200);
-
-      // Step 5: End screen
-      setTimeout(()=>{
-        screen.style.display="none";
-        document.getElementById("noPasses").style.display="block";
-        document.getElementById("buyBtn").style.display="block";
-      },6000);
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
