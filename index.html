@@ -69,8 +69,8 @@
       animation: scanLine 2s infinite ease-in-out;
     }
     @keyframes scanLine {
-      0%   { left:40px; }              /* near mushroom */
-      50%  { left:calc(100% - 40px); } /* near shrimp */
+      0%   { left:40px; }
+      50%  { left:calc(100% - 40px); }
       100% { left:40px; }
     }
 
@@ -113,6 +113,31 @@
       background:#007aff;
       color:#fff;
     }
+
+    /* ✅ Bottom Navigation */
+    .tabs {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      border-top: 1px solid #222;
+      background: #0d0d0d;
+      padding: 10px 0;
+      z-index: 100;
+    }
+    .tabs div {
+      flex: 1;
+      text-align: center;
+      font-size: 13px;
+      opacity: 0.6;
+    }
+    .tabs .active {
+      color: #007aff;
+      opacity: 1;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
@@ -152,27 +177,27 @@
     <button class="btn gray" onclick="closeStaffModal()">Cancel</button>
   </div>
 
- <!-- Animation Screen -->
-<div id="animationScreen" class="animation-screen">
-  <svg id="loaderArc" viewBox="0 0 100 100">
-    <circle cx="50" cy="50" r="40" stroke="white" stroke-width="8" fill="none"
-      stroke-linecap="round" stroke-dasharray="200" stroke-dashoffset="200"/>
-  </svg>
+  <!-- Animation Screen -->
+  <div id="animationScreen" class="animation-screen">
+    <svg id="loaderArc" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="40" stroke="white" stroke-width="8" fill="none"
+        stroke-linecap="round" stroke-dasharray="200" stroke-dashoffset="200"/>
+    </svg>
 
-  <svg id="checkIcon" viewBox="0 0 52 52" style="display:none;">
-    <circle cx="26" cy="26" r="24" fill="none" stroke="white" stroke-width="4"/>
-    <path d="M14 27 L22 35 L38 18" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
-  </svg>
+    <svg id="checkIcon" viewBox="0 0 52 52" style="display:none;">
+      <circle cx="26" cy="26" r="24" fill="none" stroke="white" stroke-width="4"/>
+      <path d="M14 27 L22 35 L38 18" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+    </svg>
 
-  <div id="pieces" class="pieces" style="display:none;">
-    <div>■</div><div>■</div>
+    <div id="pieces" class="pieces" style="display:none;">
+      <div>■</div><div>■</div>
+    </div>
+
+    <!-- ✅ LL logo image -->
+    <img id="llLogo" src="LLogo.jpeg" alt="LL Logo" style="display:none; width:120px; height:auto;" />
+
+    <div class="tagline" id="tagline">Fun, Faster.</div>
   </div>
-
-  <!-- ✅ LL logo image -->
-  <img id="llLogo" src="LLogo.jpeg" alt="LL Logo" style="display:none; width:120px; height:auto;" />
-
-  <div class="tagline" id="tagline">Fun, Faster.</div>
-</div>
 
   <!-- No Passes Screen -->
   <div id="noPasses">
@@ -180,6 +205,14 @@
     <h2>You Have No Passes</h2>
   </div>
   <button id="buyBtn">Buy Another Pass</button>
+
+  <!-- ✅ Bottom Navigation -->
+  <nav class="tabs">
+    <div>Venues</div>
+    <div class="active">My Passes</div>
+    <div>Drops</div>
+    <div>Account</div>
+  </nav>
 
   <script>
     // Open/close modal
