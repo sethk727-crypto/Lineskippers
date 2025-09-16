@@ -1,143 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>LineSkip Pass</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
 <body>
-
-  <!-- Screen content (everything above the tab bar) -->
-  <main class="app">
-
+  <div class="app">
     <!-- Pass Card -->
-    <section class="card" id="passCard">
-      <div class="card-top">
-        <span class="venue">Champs Downtown</span>
-        <span class="qty">Qty: 1</span>
-      </div>
-
-      <h2 class="brand">LineSkip</h2>
-
+    <div class="card" id="passCard">
+      <h2>Champs Downtown<br>LineSkip</h2>
+      <div class="qty">Qty: 1</div>
       <div class="qr">
-        <img
-          src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=LineSkipPass"
-          alt="QR Code"/>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=LineSkipPass" alt="QR Code">
       </div>
-
       <div class="details">
-        <div class="detail">
+        <div class="detail left">
           <div class="label">Passholder</div>
-          <div class="value">Seth king</div>
+          <div class="value">Seth King</div>
         </div>
         <div class="detail right">
           <div class="label">Expires at</div>
-          <div class="value">Sep 16, 4:00 AM</div>
+          <div class="value" id="expiresAt">—</div>
         </div>
       </div>
-    </section>
+    </div>
 
-    <!-- Bottom section: instruction + buttons + dot -->
-    <section class="bottom-section">
+    <!-- Bottom section -->
+    <div class="bottom-section">
       <p class="note">
-        Show doorman pass to redeem.<br />
+        Show doorman pass to redeem. <br>
         Only doorman should redeem.
       </p>
-
-      <button class="btn btn-gray" id="openSheetBtn">I am the bartender or venue staff</button>
-      <button class="btn btn-blue" id="howBtn">How to redeem this pass</button>
-
-      <div class="pager-dot" aria-hidden="true"></div>
-    </section>
-  </main>
-
-  <!-- Bottom Navigation with your icons -->
-  <nav class="tabs" role="navigation" aria-label="Main">
-    <a class="tab" href="#" aria-label="Venues">
-      <img src="VENUES.jpeg" alt="" />
-      <span>Venues</span>
-    </a>
-    <a class="tab active" href="#" aria-current="page" aria-label="My Passes">
-      <img src="mY PASSES.jpeg" alt="" />
-      <span>My Passes</span>
-    </a>
-    <a class="tab" href="#" aria-label="Drops">
-      <img src="dROPS.jpeg" alt="" />
-      <span>Drops</span>
-    </a>
-    <a class="tab" href="#" aria-label="Account">
-      <img src="aCCOUNT.jpeg" alt="" />
-      <span>Account</span>
-    </a>
-  </nav>
-
-  <!-- ===== Slide-up bottom sheet ===== -->
-  <div class="backdrop" id="backdrop"></div>
-  <aside class="sheet" id="sheet" aria-hidden="true" role="dialog" aria-label="Staff redeem">
-    <div class="sheet-handle"></div>
-
-    <!-- circular logo (uses venueLogo.png if present, otherwise shows text fallback) -->
-    <div class="logo-wrap">
-      <img class="logo-img" src="venueLogo.png" alt="Champs logo"
-           onerror="this.style.display='none'; this.previousElementSibling.style.display='flex';" />
-      <div class="logo-fallback">Champs</div>
+      <button class="btn gray" onclick="openStaffModal()">I am the bartender or venue staff</button>
+      <button class="btn blue">How to redeem this pass</button>
     </div>
+  </div>
 
-    <div class="sheet-card">
-      <div class="qr-big">
-        <img
-          src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=Redeem"
-          alt="Redeem QR"/>
-      </div>
-      <p class="current-time">
-        <span>Current time</span><br />
-        <strong id="liveTime">—</strong>
-      </p>
+  <!-- Staff Modal -->
+  <div id="staffModal" class="modal">
+    <div class="qr">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=Redeem" alt="QR Code">
     </div>
-
-    <!-- scanner lane with moving vertical line + emojis -->
-    <div class="scanner">
-      <div class="scan-line"></div>
-      <div class="icons">
-        <span>🍄</span>
-        <span>🦐</span>
-      </div>
+    <p>Current time<br><span id="liveTime"></span></p>
+    <div class="emoji-box">
+      <span>🍄</span>
+      <div class="divider"></div>
+      <span>🍤</span>
     </div>
+    <p style="color:#ffcc00; margin:10px 0;">⚠ This action cannot be undone</p>
+    <button class="btn blue" onclick="startAnimation()">Redeem</button>
+    <button class="btn gray" onclick="closeStaffModal()">Cancel</button>
+  </div>
 
-    <p class="warn">⚠️ This action cannot be undone</p>
-
-    <button class="btn btn-blue" id="redeemBtn">Redeem</button>
-    <button class="btn btn-ghost" id="cancelSheetBtn">Cancel</button>
-  </aside>
-
-  <!-- ===== Fullscreen animation overlay ===== -->
-  <section class="anim-screen" id="animScreen" aria-hidden="true">
-    <svg id="loaderArc" viewBox="0 0 100 100" class="arc">
-      <circle cx="50" cy="50" r="40"
-              stroke="white" stroke-width="8" fill="none"
-              stroke-linecap="round" stroke-dasharray="200" stroke-dashoffset="200" />
+  <!-- Animation Screen -->
+  <div id="animationScreen" class="animation-screen">
+    <svg id="loaderArc" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="40" stroke="white" stroke-width="8" fill="none"
+        stroke-linecap="round" stroke-dasharray="200" stroke-dashoffset="200"/>
     </svg>
-
-    <svg id="checkIcon" viewBox="0 0 52 52" class="check" style="display:none;">
+    <svg id="checkIcon" viewBox="0 0 52 52" style="display:none;">
       <circle cx="26" cy="26" r="24" fill="none" stroke="white" stroke-width="4"/>
       <path d="M14 27 L22 35 L38 18" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
     </svg>
-
-    <div id="pieces" class="pieces" style="display:none;">■ ■</div>
-
-    <img id="llLogo" src="LLogo.jpeg" alt="LL Logo" class="ll-logo" style="display:none;" />
-
+    <div id="pieces" class="pieces" style="display:none;">
+      <div>■</div><div>■</div>
+    </div>
+    <img id="llLogo" src="LLogo.jpeg" alt="LL Logo" style="display:none; width:120px; height:auto;" />
     <div class="tagline" id="tagline">Fun, Faster.</div>
-  </section>
+  </div>
 
-  <!-- “No Passes” state after redeem -->
-  <section id="noPasses" class="empty" style="display:none;">
+  <!-- No Passes Screen -->
+  <div id="noPasses">
+    <img src="https://cdn-icons-png.flaticon.com/512/1047/1047711.png" width="80" alt="Beer Mug"><br>
     <h2>You Have No Passes</h2>
-    <button id="buyBtn" class="btn btn-blue">Buy Another Pass</button>
-  </section>
+  </div>
+  <button id="buyBtn">Buy Another Pass</button>
 
-  <script src="script.js"></script>
+  <!-- Bottom Navigation -->
+  <nav class="tabs">
+    <div>
+      <img src="VENUES.jpeg" alt="Venues">
+      <span>Venues</span>
+    </div>
+    <div class="active">
+      <img src="mY PASSES.jpeg" alt="My Passes">
+      <span>My Passes</span>
+    </div>
+    <div>
+      <img src="dROPS.jpeg" alt="Drops">
+      <span>Drops</span>
+    </div>
+    <div>
+      <img src="aCCOUNT.jpeg" alt="Account">
+      <span>Account</span>
+    </div>
+  </nav>
+
+  <script src="./script.js"></script>
 </body>
 </html>
