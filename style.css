@@ -103,6 +103,7 @@ body {
 }
 
 /* ✅ Bottom navigation bar */
+/* Bottom navigation bar */
 .tabs {
   position: fixed;
   bottom: 0;
@@ -112,15 +113,26 @@ body {
   justify-content: space-around;
   border-top: 1px solid #222;
   background: #0d0d0d;
-  padding: 10px 0;
+  padding: 6px 0 4px;
   z-index: 100;
 }
 
 .tabs div {
   flex: 1;
   text-align: center;
-  font-size: 13px;
+  font-size: 12px;
   opacity: 0.6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.tabs div img {
+  width: 22px;
+  height: 22px;
+  margin-bottom: 2px;
+  display: block;
 }
 
 .tabs .active {
