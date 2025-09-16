@@ -1,20 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-  <title>NEW NEW NEW NEW one</title>
-  <link rel="stylesheet" href="./style.css">
-
-</head>
-<body>
-<!-- partial:index.partial.html -->
-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LineSkip Pass</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <link rel="stylesheet" href="./style.css">
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -96,10 +87,11 @@
 
     .pieces { display:flex; gap:10px; font-size:40px; color:white; }
 
-    /* LL Logo */
-    .ll-logo {
+    /* LL Logo image */
+    #llLogo {
       display:none;
-      fill:white;
+      width:120px;
+      height:auto;
     }
 
     /* No Passes */
@@ -176,15 +168,8 @@
       <div>■</div><div>■</div>
     </div>
 
-    <!-- True LL logo -->
-    <svg id="llLogo" class="ll-logo" width="160" height="100" viewBox="0 0 160 100"
-      xmlns="http://www.w3.org/2000/svg">
-      <text x="0" y="70" font-size="80"
-        font-family="'Metal Stencil Oblique JNL', Impact, sans-serif"
-        font-weight="bold" transform="skewX(-15)">
-        LL
-      </text>
-    </svg>
+    <!-- LL logo as image -->
+    <img id="llLogo" src="LLogo.jpeg" alt="LL Logo" />
 
     <div class="tagline" id="tagline">Fun, Faster.</div>
   </div>
@@ -238,7 +223,7 @@
         gsap.fromTo(pieces.children,{y:0,opacity:1},{y:-80, rotation:180, opacity:0, duration:1, stagger:0.2});
       },3000);
 
-      // Step 4: Morph into LL logo
+      // Step 4: Show LL logo image
       setTimeout(()=>{
         pieces.style.display="none";
         logo.style.display="block";
@@ -253,10 +238,5 @@
       },6000);
     }
   </script>
-</body>
-</html>
-<!-- partial -->
-  <script  src="./script.js"></script>
-
 </body>
 </html>
