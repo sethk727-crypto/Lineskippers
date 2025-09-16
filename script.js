@@ -96,3 +96,20 @@ redeemBtn.addEventListener("click", () => {
     document.getElementById("noPasses").style.display = "flex";
   }, 6000);
 });
+function updateExpiration() {
+  const expEl = document.getElementById("expiresAt");
+  if (!expEl) return;
+
+  const now = new Date();
+  // tomorrow’s date
+  const tomorrow = new Date(now);
+  tomorrow.setDate(now.getDate() + 1);
+  // set time to 4:00 AM
+  tomorrow.setHours(4, 0, 0, 0);
+
+  const options = { month: "short", day: "numeric" };
+  const dateStr = tomorrow.toLocaleDateString("en-US", options);
+  expEl.textContent = `${dateStr}, 4:00 AM`;
+}
+
+updateExpiration();
