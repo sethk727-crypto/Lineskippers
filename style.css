@@ -4,7 +4,6 @@ body {
   margin: 0;
   padding: 0;
   color: white;
-  padding-bottom: 90px; /* ✅ leaves room above bottom nav */
 }
 
 /* Blue Pass Card */
@@ -28,46 +27,14 @@ body {
 
 .details { display:flex; justify-content:space-between; font-size:14px; }
 
-/* ✅ Instruction note above buttons */
-.note {
-  width: 90%;
-  max-width: 380px;
-  margin: 20px auto 10px;
-  text-align: center;
-  font-size: 14px;
-  color: #d0d0d0;
-  border-top: 1px solid #222;
-  border-bottom: 1px solid #222;
-  padding: 12px 0;
-}
-
 /* Buttons */
 .btn {
-  display:block;
-  width: 90%;
-  max-width: 380px;
-  margin: 10px auto;
-  padding: 14px;
-  font-size:16px;
-  font-weight:600;
-  border-radius: 10px;
-  cursor:pointer;
-  text-align:center;
+  display:block; width:90%; margin:10px auto;
+  padding:15px; font-size:16px; font-weight:600;
+  border:none; border-radius:12px; cursor:pointer;
 }
-
-/* Gray outline button */
-.btn.gray {
-  background: transparent;
-  border: 1.5px solid #444;
-  color: #fff;
-}
-
-/* Blue filled button */
-.btn.blue {
-  background:#007aff;
-  color:#fff;
-  border:none;
-}
+.btn.gray { background:#2c2c2e; color:#fff; }
+.btn.blue { background:#007aff; color:#fff; }
 
 /* Modal for staff redeem */
 .modal {
@@ -145,26 +112,15 @@ body {
   justify-content: space-around;
   border-top: 1px solid #222;
   background: #0d0d0d;
-  padding: 6px 0 4px;
+  padding: 10px 0;
   z-index: 100;
 }
 
 .tabs div {
   flex: 1;
   text-align: center;
-  font-size: 12px;
+  font-size: 13px;
   opacity: 0.6;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.tabs div img {
-  width: 22px;
-  height: 22px;
-  margin-bottom: 2px;
-  display: block;
 }
 
 .tabs .active {
