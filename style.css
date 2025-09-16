@@ -38,6 +38,15 @@ body {
 .details { display:flex; justify-content:space-between; font-size:14px; }
 
 /* Bottom section buttons */
+.button-block {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: calc(80px + env(safe-area-inset-bottom)); /* leave room for nav + iPhone safe area */
+  background: #0d0d0d;
+}
+
 .btn {
   width: 92%;
   max-width: 400px;
@@ -53,16 +62,15 @@ body {
 
 /* Gray button */
 .btn.gray {
-  background: #2C2C2E; /* solid dark gray */
+  background: #2C2C2E;
   color: #fff;
 }
 
 /* Blue button */
 .btn.blue {
-  background: #0A84FF; /* brighter iOS system blue */
+  background: #0A84FF;
   color: #fff;
 }
-
 
 /* Bottom Navigation */
 .tabs {
@@ -74,25 +82,7 @@ body {
   justify-content: space-around;
   border-top: 1px solid #222;
   background: #0d0d0d;
-  padding: 6px 0 4px;
+  padding: 6px 0 calc(4px + env(safe-area-inset-bottom)); /* account for safe area */
   z-index: 100;
 }
-.tabs div {
-  flex: 1;
-  text-align: center;
-  font-size: 12px;
-  opacity: 0.6;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.tabs div img {
-  width: 22px;
-  height: 22px;
-  margin-bottom: 2px;
-}
-.tabs .active {
-  color: #007aff;
-  opacity: 1;
-  font-weight: 600;
-}
+
