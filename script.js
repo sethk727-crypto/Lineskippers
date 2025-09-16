@@ -1,68 +1,98 @@
-// ========== Expiration date ==========
-function updateExpiration() {
-  const expEl = document.getElementById("expiresAt");
-  if (!expEl) return;
-
+// live time updater (for the sheet)
+function updateLiveTime() {
+  const el = document.getElementById("liveTime");
+  if (!el) return;
   const now = new Date();
-  const tomorrow = new Date(now);
-  tomorrow.setDate(now.getDate() + 1);
-  tomorrow.setHours(4, 0, 0, 0);
-
-  const options = { month: "short", day: "numeric" };
-  const dateStr = tomorrow.toLocaleDateString("en-US", options);
-  expEl.textContent = `${dateStr}, 4:00 AM`;
+  el.textContent = now.toLocaleString("en-US", {
+    month: "short", day: "numeric",
+    hour: "numeric", minute: "2-digit", second: "2-digit"
+  });
 }
-updateExpiration();
+setInterval(updateLiveTime, 1000);
+updateLiveTime();
 
-// ========== Live Time ==========
-function updateTime(){
-  document.getElementById("liveTime").textContent = new Date().toLocaleString();
+// elements
+const openSheetBtn = document.getElementById("openSheetBtn");
+const howBtn       = document.getElementById("howBtn");
+const sheet        = document.getElementById("sheet");
+const backdrop     = document.getElementById("backdrop");
+const cancelBtn    = document.getElementById("cancelSheetBtn");
+const redeemBtn    = document.getElementById("redeemBtn");
+const animScreen   = document.getElementById("animScreen");
+
+// sheet open/close helpers
+function openSheet(){
+  sheet.classList.add("show");
+  backdrop.classList.add("show");
+  sheet.setAttribute("aria-hidden", "false");
+  // lock body scroll behind sheet
+  document.documentElement.style.overflow = "hidden";
+  document.body.style.overflow = "hidden";
 }
-setInterval(updateTime,1000);
-
-// ========== Modal ==========
-function openStaffModal(){
-  document.getElementById("staffModal").style.display="flex";
-  updateTime();
-}
-function closeStaffModal(){
-  document.getElementById("staffModal").style.display="none";
+function closeSheet(){
+  sheet.classList.remove("show");
+  backdrop.classList.remove("show");
+  sheet.setAttribute("aria-hidden", "true");
+  document.documentElement.style.overflow = "";
+  document.body.style.overflow = "";
 }
 
-// ========== Redeem Animation ==========
-function startAnimation(){
-  document.getElementById("staffModal").style.display="none";
-  const screen=document.getElementById("animationScreen");
-  screen.style.display="flex";
+// bind clicks
+openSheetBtn.addEventListener("click", openSheet);
+howBtn.addEventListener("click", openSheet);        // same sheet for demo
+cancelBtn.addEventListener("click", closeSheet);
+backdrop.addEventListener("click", closeSheet);
 
-  const loaderArc=document.querySelector("#loaderArc circle");
-  const check=document.getElementById("checkIcon");
-  const pieces=document.getElementById("pieces");
-  const logo=document.getElementById("llLogo");
-  const tagline=document.getElementById("tagline");
+// redeem flow animation — loader arc → check → pieces → LL logo → end
+redeemBtn.addEventListener("click", () => {
+  closeSheet();
+  animScreen.style.display = "flex";
 
-  gsap.fromTo(loaderArc,{strokeDashoffset:200},{strokeDashoffset:0, duration:1.5, ease:"power2.inOut", onComplete:()=>{
-    document.getElementById("loaderArc").style.display="none";
-    check.style.display="block";
-    gsap.from(check,{scale:0, duration:0.5, ease:"back.out(2)"});
-    gsap.to(tagline,{opacity:1, delay:0.5, duration:1});
-  }});
+  const arcCircle = document.querySelector("#loaderArc circle");
+  const check     = document.getElementById("checkIcon");
+  const pieces    = document.getElementById("pieces");
+  const logo      = document.getElementById("llLogo");
+  const tagline   = document.getElementById("tagline");
 
-  setTimeout(()=>{
-    check.style.display="none";
-    pieces.style.display="flex";
-    gsap.fromTo(pieces.children,{y:0,opacity:1},{y:-80, rotation:180, opacity:0, duration:1, stagger:0.2});
-  },3000);
+  // 1) draw the arc
+  gsap.fromTo(
+    arcCircle,
+    { strokeDashoffset: 200 },
+    {
+      strokeDashoffset: 0,
+      duration: 1.5,
+      ease: "power2.inOut",
+      onComplete: () => {
+        // 2) show check
+        document.getElementById("loaderArc").style.display = "none";
+        check.style.display = "block";
+        gsap.from(check, { scale: 0, duration: 0.6, ease: "back.out(1.8)" });
+        gsap.to(tagline, { opacity: 1, delay: 0.4, duration: 1.0 });
+      }
+    }
+  );
 
-  setTimeout(()=>{
-    pieces.style.display="none";
-    logo.style.display="block";
-    gsap.from(logo,{scale:0, y:-50, duration:0.7, ease:"back.out(1.7)"});
-  },4200);
+  // 3) pieces break
+  setTimeout(() => {
+    check.style.display = "none";
+    pieces.style.display = "block";
+    gsap.fromTo(
+      pieces,
+      { y: 0, opacity: 1 },
+      { y: -80, rotation: 180, opacity: 0, duration: 1.0 }
+    );
+  }, 3000);
 
-  setTimeout(()=>{
-    screen.style.display="none";
-    document.getElementById("noPasses").style.display="block";
-    document.getElementById("buyBtn").style.display="block";
-  },6000);
-}
+  // 4) show final logo
+  setTimeout(() => {
+    pieces.style.display = "none";
+    logo.style.display = "block";
+    gsap.from(logo, { scale: 0, y: -40, duration: 0.7, ease: "back.out(1.7)" });
+  }, 4200);
+
+  // 5) end → no passes
+  setTimeout(() => {
+    animScreen.style.display = "none";
+    document.getElementById("noPasses").style.display = "flex";
+  }, 6000);
+});
