@@ -4,6 +4,7 @@ body {
   margin: 0;
   padding: 0;
   color: white;
+  padding-bottom: 90px; /* ✅ leaves room above bottom nav */
 }
 
 /* Blue Pass Card */
@@ -27,14 +28,46 @@ body {
 
 .details { display:flex; justify-content:space-between; font-size:14px; }
 
+/* ✅ Instruction note above buttons */
+.note {
+  width: 90%;
+  max-width: 380px;
+  margin: 20px auto 10px;
+  text-align: center;
+  font-size: 14px;
+  color: #d0d0d0;
+  border-top: 1px solid #222;
+  border-bottom: 1px solid #222;
+  padding: 12px 0;
+}
+
 /* Buttons */
 .btn {
-  display:block; width:90%; margin:10px auto;
-  padding:15px; font-size:16px; font-weight:600;
-  border:none; border-radius:12px; cursor:pointer;
+  display:block;
+  width: 90%;
+  max-width: 380px;
+  margin: 10px auto;
+  padding: 14px;
+  font-size:16px;
+  font-weight:600;
+  border-radius: 10px;
+  cursor:pointer;
+  text-align:center;
 }
-.btn.gray { background:#2c2c2e; color:#fff; }
-.btn.blue { background:#007aff; color:#fff; }
+
+/* Gray outline button */
+.btn.gray {
+  background: transparent;
+  border: 1.5px solid #444;
+  color: #fff;
+}
+
+/* Blue filled button */
+.btn.blue {
+  background:#007aff;
+  color:#fff;
+  border:none;
+}
 
 /* Modal for staff redeem */
 .modal {
@@ -103,7 +136,6 @@ body {
 }
 
 /* ✅ Bottom navigation bar */
-/* Bottom navigation bar */
 .tabs {
   position: fixed;
   bottom: 0;
