@@ -9,77 +9,34 @@
 </head>
 <body>
 
-  <!-- Pass Card -->
-  <div class="card" id="passCard">
-    <h2>Champs Downtown<br>LineSkip</h2>
-    <div class="qty">Qty: 1</div>
-    <div class="qr">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=LineSkipPass" alt="QR Code">
+  <div class="app">
+
+    <!-- Pass Card -->
+    <div class="card" id="passCard">
+      <h2>Champs Downtown<br>LineSkip</h2>
+      <div class="qty">Qty: 1</div>
+      <div class="qr">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=LineSkipPass" alt="QR Code">
+      </div>
+      <div class="details">
+        <p><strong>Passholder</strong><br>Seth King</p>
+        <p><strong>Expires at</strong><br>Sep 16, 4:00 AM</p>
+      </div>
     </div>
-    <div class="details">
-      <p><strong>Passholder</strong><br>Seth King</p>
-      <p><strong>Expires at</strong><br>Sep 16, 4:00 AM</p>
+
+    <!-- Bottom section: note + buttons -->
+    <div class="bottom-section">
+      <p class="note">
+        Show doorman pass to redeem. <br>
+        Only doorman should redeem.
+      </p>
+
+      <button class="btn gray" onclick="openStaffModal()">I am the bartender or venue staff</button>
+      <button class="btn blue">How to redeem this pass</button>
     </div>
   </div>
 
-  <!-- Staff Modal -->
-  <div id="staffModal" class="modal">
-    <div class="qr">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=Redeem" alt="QR Code">
-    </div>
-    <p>Current time<br><span id="liveTime"></span></p>
-
-    <div class="emoji-box">
-      <span>🍄</span>
-      <div class="divider"></div>
-      <span>🍤</span>
-    </div>
-
-    <p style="color:#ffcc00; margin:10px 0;">⚠ This action cannot be undone</p>
-    <button class="btn blue" onclick="startAnimation()">Redeem</button>
-    <button class="btn gray" onclick="closeStaffModal()">Cancel</button>
-  </div>
-
-  <!-- Animation Screen -->
-  <div id="animationScreen" class="animation-screen">
-    <svg id="loaderArc" viewBox="0 0 100 100">
-      <circle cx="50" cy="50" r="40" stroke="white" stroke-width="8" fill="none"
-        stroke-linecap="round" stroke-dasharray="200" stroke-dashoffset="200"/>
-    </svg>
-
-    <svg id="checkIcon" viewBox="0 0 52 52" style="display:none;">
-      <circle cx="26" cy="26" r="24" fill="none" stroke="white" stroke-width="4"/>
-      <path d="M14 27 L22 35 L38 18" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
-    </svg>
-
-    <div id="pieces" class="pieces" style="display:none;">
-      <div>■</div><div>■</div>
-    </div>
-
-    <img id="llLogo" src="LLogo.jpeg" alt="LL Logo" style="display:none; width:120px; height:auto;" />
-
-    <div class="tagline" id="tagline">Fun, Faster.</div>
-  </div>
-
-  <!-- No Passes Screen -->
-  <div id="noPasses">
-    <img src="https://cdn-icons-png.flaticon.com/512/1047/1047711.png" width="80" alt="Beer Mug"><br>
-    <h2>You Have No Passes</h2>
-  </div>
-  <button id="buyBtn">Buy Another Pass</button>
-
-  <!-- ✅ Fixed Bottom Buttons -->
-  <div class="button-block">
-    <p class="note">
-      Show doorman pass to redeem. <br>
-      Only doorman should redeem.
-    </p>
-
-    <button class="btn gray" onclick="openStaffModal()">I am the bartender or venue staff</button>
-    <button class="btn blue">How to redeem this pass</button>
-  </div>
-
-  <!-- ✅ Bottom Navigation -->
+  <!-- Bottom Navigation -->
   <nav class="tabs">
     <div>
       <img src="VENUES.jpeg" alt="Venues">
@@ -99,55 +56,5 @@
     </div>
   </nav>
 
-  <script>
-    function openStaffModal(){
-      document.getElementById("staffModal").style.display="flex";
-      updateTime();
-      setInterval(updateTime,1000);
-    }
-    function closeStaffModal(){
-      document.getElementById("staffModal").style.display="none";
-    }
-    function updateTime(){
-      document.getElementById("liveTime").textContent = new Date().toLocaleString();
-    }
-
-    function startAnimation(){
-      document.getElementById("staffModal").style.display="none";
-      const screen=document.getElementById("animationScreen");
-      screen.style.display="flex";
-
-      const loaderArc=document.querySelector("#loaderArc circle");
-      const check=document.getElementById("checkIcon");
-      const pieces=document.getElementById("pieces");
-      const logo=document.getElementById("llLogo");
-      const tagline=document.getElementById("tagline");
-
-      gsap.fromTo(loaderArc,{strokeDashoffset:200},{strokeDashoffset:0, duration:1.5, ease:"power2.inOut", onComplete:()=>{
-        document.getElementById("loaderArc").style.display="none";
-        check.style.display="block";
-        gsap.from(check,{scale:0, duration:0.5, ease:"back.out(2)"});
-        gsap.to(tagline,{opacity:1, delay:0.5, duration:1});
-      }});
-
-      setTimeout(()=>{
-        check.style.display="none";
-        pieces.style.display="flex";
-        gsap.fromTo(pieces.children,{y:0,opacity:1},{y:-80, rotation:180, opacity:0, duration:1, stagger:0.2});
-      },3000);
-
-      setTimeout(()=>{
-        pieces.style.display="none";
-        logo.style.display="block";
-        gsap.from(logo,{scale:0, y:-50, duration:0.7, ease:"back.out(1.7)"});
-      },4200);
-
-      setTimeout(()=>{
-        screen.style.display="none";
-        document.getElementById("noPasses").style.display="block";
-        document.getElementById("buyBtn").style.display="block";
-      },6000);
-    }
-  </script>
 </body>
 </html>
