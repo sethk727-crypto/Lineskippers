@@ -1,4 +1,4 @@
-const CACHE = "lineskip-v2";
+const CACHE = "lineskip-v3";
 
 const SHELL = [
   "/",
@@ -28,34 +28,41 @@ self.addEventListener("activate", e => {
   self.clients.claim();
 });
 
+function fetchAndCache(request) {
+  return fetch(request).then(res => {
+    if (res.ok && (res.type === "basic" || res.type === "cors")) {
+      const copy = res.clone();
+      caches.open(CACHE).then(c => c.put(request, copy));
+    }
+    return res;
+  });
+}
+
 self.addEventListener("fetch", e => {
   if (e.request.method !== "GET") return;
 
-  // pages: network first so updates land, cache fallback for offline
-  if (e.request.mode === "navigate") {
+  const url = new URL(e.request.url);
+  const isShellAsset =
+    url.origin === self.location.origin && /\.(css|js|json|webmanifest)$/.test(url.pathname);
+
+  // HTML + CSS/JS: network first so every load gets one matching version;
+  // cache is only the offline fallback. Prevents old-HTML/new-JS mixes.
+  if (e.request.mode === "navigate" || isShellAsset) {
     e.respondWith(
-      fetch(e.request)
-        .then(res => {
-          const copy = res.clone();
-          caches.open(CACHE).then(c => c.put(e.request, copy));
-          return res;
-        })
-        .catch(() => caches.match(e.request).then(r => r || caches.match("/")))
+      fetchAndCache(e.request).catch(() =>
+        caches.match(e.request).then(r =>
+          r || (e.request.mode === "navigate" ? caches.match("/") : Response.error())
+        )
+      )
     );
     return;
   }
 
-  // assets: cache first, then network (caching what we fetch, e.g. QR images)
+  // images and the rest: serve cached instantly, refresh the cache in background
   e.respondWith(
-    caches.match(e.request).then(cached =>
-      cached ||
-      fetch(e.request).then(res => {
-        if (res.ok && (res.type === "basic" || res.type === "cors")) {
-          const copy = res.clone();
-          caches.open(CACHE).then(c => c.put(e.request, copy));
-        }
-        return res;
-      })
-    )
+    caches.match(e.request).then(cached => {
+      const fresh = fetchAndCache(e.request).catch(() => cached || Response.error());
+      return cached || fresh;
+    })
   );
 });

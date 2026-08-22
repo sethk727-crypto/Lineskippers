@@ -191,6 +191,15 @@
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("/service-worker.js")
         .catch(err => console.warn("SW failed", err));
+
+      // when a new version takes over, reload once so HTML/CSS/JS never mix versions
+      const hadController = !!navigator.serviceWorker.controller;
+      let reloaded = false;
+      navigator.serviceWorker.addEventListener("controllerchange", () => {
+        if (!hadController || reloaded) return;
+        reloaded = true;
+        location.reload();
+      });
     }
   </script>
 </body>

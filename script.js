@@ -59,6 +59,11 @@ howBtn.addEventListener("click", openSheet);        // same sheet for demo
 cancelBtn.addEventListener("click", closeSheet);
 backdrop.addEventListener("click", closeSheet);
 
+// tab links are placeholders — stop them from jumping/scrolling the page
+document.querySelectorAll(".tabs .tab").forEach(tab =>
+  tab.addEventListener("click", e => e.preventDefault())
+);
+
 // ---------- redeem animation ----------
 // check draws in with "Fun, Faster." → check shatters into pieces →
 // pieces pull back together as the LL mark → My Passes empty state
@@ -71,6 +76,8 @@ const SCATTER = [
   { x:  -8, y:  56, r:  130 },
 ];
 
+let redeeming = false;
+
 function showEmptyState(){
   animScreen.style.display = "none";
   animScreen.style.opacity = "";
@@ -79,9 +86,12 @@ function showEmptyState(){
   const empty = document.getElementById("noPasses");
   empty.style.display = "flex";
   if (window.gsap) gsap.from(empty, { opacity: 0, duration: 0.3 });
+  redeeming = false;
 }
 
 redeemBtn.addEventListener("click", () => {
+  if (redeeming) return;              // ignore double taps
+  redeeming = true;
   closeSheet();
   animScreen.style.display = "flex";
 
