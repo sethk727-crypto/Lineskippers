@@ -5,14 +5,17 @@
   <title>LineSkip Pass</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <link rel="stylesheet" href="style.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="gsap.min.js"></script>
 
   <!-- 🔹 PWA + iOS support -->
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#007aff">
+  <meta name="theme-color" content="#111925">
 
   <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="LineSkip">
+  <meta name="format-detection" content="telephone=no">
   <link rel="apple-touch-icon" href="/icon-192.png">
 </head>
 <body>
@@ -20,14 +23,21 @@
   <!-- Screen content (everything above the tab bar) -->
   <main class="app">
 
+    <!-- Top header: title + live date -->
+    <header class="topbar">
+      <h1>My Passes</h1>
+      <span class="topbar-date" id="headerDate">—</span>
+    </header>
+
     <!-- Pass Card -->
     <section class="card" id="passCard">
       <div class="card-top">
-        <span class="venue">Lion's Den</span>
+        <div>
+          <div class="venue">Lion's Den</div>
+          <h2 class="brand">LineSkip (Fri)</h2>
+        </div>
         <span class="qty">Qty: 2</span>
       </div>
-
-      <h2 class="brand">LineSkip (Fri)</h2>
 
       <div class="qr">
         <img
@@ -42,14 +52,14 @@
         </div>
         <div class="detail right">
           <div class="label">Expires at</div>
-          <!-- ✅ JS will fill this with "Tomorrow, 4:00 AM" -->
+          <!-- ✅ JS will fill this with "Sep 16, 4:00 AM" -->
           <div class="value" id="expiresAt">—</div>
         </div>
       </div>
     </section>
 
     <!-- Bottom section: instruction + buttons + dot -->
-    <section class="bottom-section">
+    <section class="bottom-section" id="bottomSection">
       <p class="note">
         Show doorman pass to redeem.<br />
         Only doorman should redeem.
@@ -82,7 +92,7 @@
     </a>
   </nav>
 
-  <!-- ===== Slide-up bottom sheet ===== -->
+  <!-- ===== Slide-up staff redeem sheet (full height, like the app) ===== -->
   <div class="backdrop" id="backdrop"></div>
   <aside class="sheet" id="sheet" aria-hidden="true" role="dialog" aria-label="Staff redeem">
     <div class="sheet-handle"></div>
@@ -90,7 +100,7 @@
     <!-- circular logo (uses venueLogo.png if present, otherwise shows text fallback) -->
     <div class="logo-wrap">
       <img class="logo-img" src="venueLogo.png" alt="Champs logo"
-           onerror="this.style.display='none'; this.previousElementSibling.style.display='flex';" />
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
       <div class="logo-fallback">Champs</div>
     </div>
 
@@ -111,7 +121,7 @@
       <div class="scan-line"></div>
       <div class="icons">
         <span>🍄</span>
-        <span>🦐</span>
+        <span>🍤</span>
       </div>
     </div>
 
@@ -123,32 +133,55 @@
 
   <!-- ===== Fullscreen animation overlay ===== -->
   <section class="anim-screen" id="animScreen" aria-hidden="true">
-    <svg id="loaderArc" viewBox="0 0 100 100" class="arc">
-      <circle cx="50" cy="50" r="40"
-              stroke="white" stroke-width="8" fill="none"
-              stroke-linecap="round" stroke-dasharray="200" stroke-dashoffset="200" />
-    </svg>
+    <div class="anim-stage">
+      <svg id="checkIcon" viewBox="0 0 52 52" class="check">
+        <circle id="checkCircle" cx="26" cy="26" r="24" fill="none" stroke="white" stroke-width="4"
+                stroke-linecap="round" stroke-dasharray="151" stroke-dashoffset="151"
+                transform="rotate(-90 26 26)"/>
+        <path id="checkTick" d="M14 27 L22 35 L38 18" stroke="white" stroke-width="4" fill="none"
+              stroke-linecap="round" stroke-linejoin="round"
+              stroke-dasharray="35" stroke-dashoffset="35"/>
+      </svg>
 
-    <svg id="checkIcon" viewBox="0 0 52 52" class="check" style="display:none;">
-      <circle cx="26" cy="26" r="24" fill="none" stroke="white" stroke-width="4"/>
-      <path d="M14 27 L22 35 L38 18" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
-    </svg>
+      <!-- check shatters into these pieces, then they become the LL mark -->
+      <div id="fragments" class="fragments" style="display:none;">
+        <span class="frag"></span><span class="frag"></span><span class="frag"></span>
+        <span class="frag"></span><span class="frag"></span><span class="frag"></span>
+      </div>
 
-    <!-- LL mark drawn as SVG so it sits clean (no box) on the dark screen -->
-    <svg id="llLogo" viewBox="10 -4 110 100" class="ll-logo" style="display:none;" role="img" aria-label="LL logo">
-      <g transform="skewX(-12)" fill="#fff">
-        <path id="llLeft"  d="M30 4 h24 v50 h24 v20 h-48 Z"/>
-        <path id="llRight" d="M86 18 h24 v50 h24 v20 h-48 Z"/>
-      </g>
-    </svg>
+      <!-- LL mark drawn as SVG so it sits clean (no box) on the dark screen -->
+      <svg id="llLogo" viewBox="10 -4 110 100" class="ll-logo" style="display:none;" role="img" aria-label="LL logo">
+        <g transform="skewX(-12)" fill="#fff">
+          <path id="llLeft"  d="M30 4 h24 v50 h24 v20 h-48 Z"/>
+          <path id="llRight" d="M86 18 h24 v50 h24 v20 h-48 Z"/>
+        </g>
+      </svg>
+    </div>
 
     <div class="tagline" id="tagline">Fun, Faster.</div>
   </section>
 
-  <!-- “No Passes” state after redeem -->
+  <!-- “No Passes” state after redeem (tab bar stays visible) -->
   <section id="noPasses" class="empty" style="display:none;">
-    <h2>You Have No Passes</h2>
-    <button id="buyBtn" class="btn btn-blue">Buy Another Pass</button>
+    <header class="topbar">
+      <h1>My Passes</h1>
+      <span class="topbar-date" id="headerDate2">—</span>
+    </header>
+
+    <div class="empty-middle">
+      <svg class="empty-icon" viewBox="0 0 64 64" aria-hidden="true">
+        <rect x="14" y="24" width="36" height="26" rx="7"
+              fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="4 3"/>
+        <path d="M24 24 v-3 a8 8 0 0 1 16 0 v3"
+              fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="4 3"/>
+      </svg>
+      <p>You Have No Passes</p>
+    </div>
+
+    <button id="buyBtn" class="btn btn-blue btn-stacked">
+      <span class="btn-title">Buy Another Pass</span>
+      <span class="btn-sub">from Champs Downtown</span>
+    </button>
   </section>
 
   <script src="script.js"></script>
