@@ -97,13 +97,6 @@
   <aside class="sheet" id="sheet" aria-hidden="true" role="dialog" aria-label="Staff redeem">
     <div class="sheet-handle"></div>
 
-    <!-- circular logo (uses venueLogo.png if present, otherwise shows text fallback) -->
-    <div class="logo-wrap">
-      <img class="logo-img" src="venueLogo.png" alt="Champs logo"
-           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-      <div class="logo-fallback">Champs</div>
-    </div>
-
     <div class="sheet-card">
       <div class="qr-big">
         <img
@@ -181,10 +174,7 @@
       <p>You Have No Passes</p>
     </div>
 
-    <button id="buyBtn" class="btn btn-blue btn-stacked">
-      <span class="btn-title">Buy Another Pass</span>
-      <span class="btn-sub">from Champs Downtown</span>
-    </button>
+    <button id="buyBtn" class="btn btn-blue">Buy Another Pass</button>
   </section>
 
   <script src="script.js"></script>
