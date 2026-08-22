@@ -1,4 +1,4 @@
-i<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -134,9 +134,13 @@ i<!DOCTYPE html>
       <path d="M14 27 L22 35 L38 18" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
     </svg>
 
-    <div id="pieces" class="pieces" style="display:none;">■ ■</div>
-
-    <img id="llLogo" src="LLogo.jpeg" alt="LL Logo" class="ll-logo" style="display:none;" />
+    <!-- LL mark drawn as SVG so it sits clean (no box) on the dark screen -->
+    <svg id="llLogo" viewBox="10 -4 110 100" class="ll-logo" style="display:none;" role="img" aria-label="LL logo">
+      <g transform="skewX(-12)" fill="#fff">
+        <path id="llLeft"  d="M30 4 h24 v50 h24 v20 h-48 Z"/>
+        <path id="llRight" d="M86 18 h24 v50 h24 v20 h-48 Z"/>
+      </g>
+    </svg>
 
     <div class="tagline" id="tagline">Fun, Faster.</div>
   </section>

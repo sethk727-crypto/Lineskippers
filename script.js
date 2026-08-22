@@ -43,14 +43,13 @@ howBtn.addEventListener("click", openSheet);        // same sheet for demo
 cancelBtn.addEventListener("click", closeSheet);
 backdrop.addEventListener("click", closeSheet);
 
-// redeem flow animation — loader arc → check → pieces → LL logo → end
+// redeem flow animation — loader arc → check → LL logo → end
 redeemBtn.addEventListener("click", () => {
   closeSheet();
   animScreen.style.display = "flex";
 
   const arcCircle = document.querySelector("#loaderArc circle");
   const check     = document.getElementById("checkIcon");
-  const pieces    = document.getElementById("pieces");
   const logo      = document.getElementById("llLogo");
   const tagline   = document.getElementById("tagline");
 
@@ -72,25 +71,25 @@ redeemBtn.addEventListener("click", () => {
     }
   );
 
-  // 3) pieces break
+  // 3) check + tagline fade out, LL logo takes over
   setTimeout(() => {
-    check.style.display = "none";
-    pieces.style.display = "block";
-    gsap.fromTo(
-      pieces,
-      { y: 0, opacity: 1 },
-      { y: -80, rotation: 180, opacity: 0, duration: 1.0 }
-    );
-  }, 3000);
+    gsap.to([check, tagline], {
+      opacity: 0,
+      duration: 0.35,
+      onComplete: () => {
+        check.style.display = "none";
+        logo.style.display = "block";
 
-  // 4) show final logo
-  setTimeout(() => {
-    pieces.style.display = "none";
-    logo.style.display = "block";
-    gsap.from(logo, { scale: 0, y: -40, duration: 0.7, ease: "back.out(1.7)" });
-  }, 4200);
+        const leftL  = document.getElementById("llLeft");
+        const rightL = document.getElementById("llRight");
+        gsap.from(logo,   { scale: 0.85, opacity: 0, duration: 0.45, ease: "power2.out" });
+        gsap.from(leftL,  { x: -40, opacity: 0, duration: 0.6, ease: "back.out(1.6)" });
+        gsap.from(rightL, { x: 40,  opacity: 0, duration: 0.6, ease: "back.out(1.6)" });
+      }
+    });
+  }, 3200);
 
-  // 5) end → no passes
+  // 4) end → no passes
   setTimeout(() => {
     animScreen.style.display = "none";
     document.getElementById("noPasses").style.display = "flex";
