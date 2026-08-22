@@ -189,10 +189,11 @@ body{
 /* warning + sheet buttons pinned toward the bottom */
 .warn{color:var(--warn);font-size:13px;text-align:center;margin:auto 0 8px;padding-top:16px}
 
-/* redeem animation overlay */
+/* redeem animation overlay — sits UNDER the sheet (z 130) so the closing
+   sheet slides away and reveals it, like the app */
 .anim-screen{
   position:fixed;inset:0;background:var(--animBg);display:none;
-  align-items:center;justify-content:center;flex-direction:column;z-index:200;
+  align-items:center;justify-content:center;flex-direction:column;z-index:125;
 }
 .anim-stage{
   position:relative;width:150px;height:150px;
@@ -201,17 +202,20 @@ body{
 .check{width:112px;height:112px}
 .ll-logo{width:130px;height:118px}
 
-/* shatter pieces */
+/* shatter pieces: curved shards from the circle + straight bits from the check */
 .fragments{position:absolute;inset:0}
-.frag{
-  position:absolute;width:26px;height:10px;border-radius:3px;background:#fff;
+.frag{position:absolute}
+.frag.arc{
+  width:38px;height:38px;border-radius:50%;
+  border:8px solid transparent;border-top-color:#fff;
 }
-.frag:nth-child(1){left:32px;top:36px}
-.frag:nth-child(2){left:66px;top:22px}
-.frag:nth-child(3){left:98px;top:42px}
-.frag:nth-child(4){left:26px;top:80px}
-.frag:nth-child(5){left:96px;top:88px}
-.frag:nth-child(6){left:60px;top:104px}
+.frag.bar{width:22px;height:9px;border-radius:4px;background:#fff}
+.frag:nth-child(1){left:56px;top:22px}   /* top arc    */
+.frag:nth-child(2){left:90px;top:56px}   /* right arc  */
+.frag:nth-child(3){left:56px;top:90px}   /* bottom arc */
+.frag:nth-child(4){left:22px;top:56px}   /* left arc   */
+.frag:nth-child(5){left:52px;top:72px}   /* check bits */
+.frag:nth-child(6){left:74px;top:64px}
 
 .tagline{margin-top:20px;color:#8b95a3;opacity:0;font-size:17px;font-style:italic}
 

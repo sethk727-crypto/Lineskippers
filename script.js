@@ -65,15 +65,17 @@ document.querySelectorAll(".tabs .tab").forEach(tab =>
 );
 
 // ---------- redeem animation ----------
-// check draws in with "Fun, Faster." → check shatters into pieces →
-// pieces pull back together as the LL mark → My Passes empty state
+// spinner arc grows into the circle → check grows from a dot in the middle
+// with "Fun, Faster." → circle+check shatter into shards that drift up →
+// shards pull back together as the LL mark → My Passes empty state
+const FRAG_FROM = [0, 90, 180, 270, 40, -35];   // resting rotations (ring + check bits)
 const SCATTER = [
-  { x: -52, y: -38, r: -120 },
-  { x:  10, y: -60, r:   95 },
-  { x:  58, y: -30, r:  140 },
-  { x: -60, y:  16, r:   80 },
-  { x:  48, y:  34, r: -100 },
-  { x:  -8, y:  56, r:  130 },
+  { x:  30, y: -52, r:  150 },
+  { x:  62, y: -16, r:  260 },
+  { x:  10, y: -66, r:  300 },
+  { x: -34, y: -38, r:  180 },
+  { x:  44, y: -58, r:  200 },
+  { x: -10, y: -26, r: -140 },
 ];
 
 let redeeming = false;
@@ -108,38 +110,43 @@ redeemBtn.addEventListener("click", () => {
 
   gsap.set(animScreen, { opacity: 1 });
   gsap.set(checkWrap, { display: "block", opacity: 1 });
+  gsap.set("#spinGroup", { rotation: 0, svgOrigin: "26 26" });
   gsap.set(circle, { strokeDashoffset: 151 });
-  gsap.set(tick, { strokeDashoffset: 35 });
+  gsap.set(tick, { scale: 0, svgOrigin: "26 26" });
   gsap.set(tagline, { opacity: 0 });
   gsap.set(fragBox, { display: "none" });
   gsap.set(logo, { display: "none" });
 
   const tl = gsap.timeline();
 
-  // 1) circle + check draw in, tagline fades up
-  tl.from(animScreen, { opacity: 0, duration: 0.25 })
-    .to(circle, { strokeDashoffset: 0, duration: 0.9, ease: "power2.inOut" })
-    .to(tick, { strokeDashoffset: 0, duration: 0.45, ease: "power2.out" }, "-=0.2")
-    .to(tagline, { opacity: 1, duration: 0.7 }, "-=0.4")
-    .to({}, { duration: 0.8 })
+  // 1) loading: the arc grows while spinning (revealed as the sheet slides away)
+  tl.to(circle, { strokeDashoffset: 0, duration: 1.1, ease: "power1.inOut" }, 0.2)
+    .to("#spinGroup", { rotation: 300, svgOrigin: "26 26", duration: 1.1, ease: "power1.out" }, "<")
 
-    // 2) check shatters into pieces, tagline fades out
+    // 2) check grows from a dot in the middle, tagline fades up
+    .to(tick, { scale: 1, duration: 0.45, ease: "back.out(2.2)" }, "-=0.15")
+    .to(tagline, { opacity: 1, duration: 0.6 }, "-=0.2")
+    .to({}, { duration: 0.7 })
+
+    // 3) circle + check shatter into shards that drift up, tagline fades out
     .add(() => {
       checkWrap.style.display = "none";
       fragBox.style.display = "block";
     })
     .fromTo(frags,
-      { x: 0, y: 0, rotation: 0, opacity: 1 },
+      { x: 0, y: 0, scale: 1, opacity: 1, rotation: i => FRAG_FROM[i] },
       {
-        x: i => SCATTER[i].x, y: i => SCATTER[i].y, rotation: i => SCATTER[i].r,
+        x: i => SCATTER[i].x, y: i => SCATTER[i].y,
+        rotation: i => FRAG_FROM[i] + SCATTER[i].r, scale: 0.8,
         duration: 0.55, ease: "power2.out", stagger: 0.02
       })
-    .to(tagline, { opacity: 0, duration: 0.4 }, "<")
+    .to(tagline, { opacity: 0, duration: 0.35 }, "<")
 
-    // 3) pieces pull back in and become the LL mark
+    // 4) shards pull back in and become the LL mark
     .to(frags, {
-      x: 0, y: 0, rotation: i => SCATTER[i].r + 160, opacity: 0,
-      duration: 0.45, ease: "power2.in"
+      x: 0, y: 0, scale: 0.5, opacity: 0,
+      rotation: i => FRAG_FROM[i] + SCATTER[i].r + 120,
+      duration: 0.4, ease: "power2.in"
     })
     .add(() => {
       fragBox.style.display = "none";
@@ -150,8 +157,20 @@ redeemBtn.addEventListener("click", () => {
     .from(logo, { scale: 0.85, transformOrigin: "50% 50%", duration: 0.5, ease: "back.out(1.7)" }, "<")
     .to({}, { duration: 0.9 })
 
-    // 4) back to My Passes → empty state
-    .to(animScreen, { opacity: 0, duration: 0.35, onComplete: showEmptyState });
+    // 5) swap to the empty state underneath, then fade the anim screen away
+    .add(() => {
+      document.getElementById("passCard").style.display = "none";
+      document.getElementById("bottomSection").style.display = "none";
+      document.getElementById("noPasses").style.display = "flex";
+    })
+    .to(animScreen, {
+      opacity: 0, duration: 0.35,
+      onComplete: () => {
+        animScreen.style.display = "none";
+        animScreen.style.opacity = "";
+        redeeming = false;
+      }
+    });
 });
 
 // "Buy Another Pass" restores the pass so the demo can loop

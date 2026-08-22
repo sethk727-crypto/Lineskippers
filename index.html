@@ -135,18 +135,21 @@
   <section class="anim-screen" id="animScreen" aria-hidden="true">
     <div class="anim-stage">
       <svg id="checkIcon" viewBox="0 0 52 52" class="check">
-        <circle id="checkCircle" cx="26" cy="26" r="24" fill="none" stroke="white" stroke-width="4"
-                stroke-linecap="round" stroke-dasharray="151" stroke-dashoffset="151"
-                transform="rotate(-90 26 26)"/>
+        <g id="spinGroup">
+          <circle id="checkCircle" cx="26" cy="26" r="24" fill="none" stroke="white" stroke-width="4"
+                  stroke-linecap="round" stroke-dasharray="151" stroke-dashoffset="151"
+                  transform="rotate(-90 26 26)"/>
+        </g>
         <path id="checkTick" d="M14 27 L22 35 L38 18" stroke="white" stroke-width="4" fill="none"
-              stroke-linecap="round" stroke-linejoin="round"
-              stroke-dasharray="35" stroke-dashoffset="35"/>
+              stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
 
-      <!-- check shatters into these pieces, then they become the LL mark -->
+      <!-- check shatters into these pieces (curved circle shards + check bits),
+           then they become the LL mark -->
       <div id="fragments" class="fragments" style="display:none;">
-        <span class="frag"></span><span class="frag"></span><span class="frag"></span>
-        <span class="frag"></span><span class="frag"></span><span class="frag"></span>
+        <span class="frag arc"></span><span class="frag arc"></span>
+        <span class="frag arc"></span><span class="frag arc"></span>
+        <span class="frag bar"></span><span class="frag bar"></span>
       </div>
 
       <!-- LL mark drawn as SVG so it sits clean (no box) on the dark screen -->
